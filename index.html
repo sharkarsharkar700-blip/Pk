@@ -1,0 +1,206 @@
+<!<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Taker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+
+        .input-group {
+            margin-bottom: 30px;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 20px;
+            font-size: 1.5em;
+            border: 3px solid #ddd;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            font-size: 1.2em;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            margin: 10px;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+        }
+
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9ff;
+            border-radius: 15px;
+            border-left: 5px solid #667eea;
+        }
+
+        .number-display {
+            font-size: 3em;
+            font-weight: bold;
+            color: #667eea;
+            margin: 10px 0;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+            font-size: 1.1em;
+        }
+
+        .stat {
+            background: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .clear-btn {
+            background: #ff6b6b;
+        }
+
+        .clear-btn:hover {
+            transform: translateY(-3px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Number Taker</h1>
+        
+        <div class="input-group">
+            <input type="number" id="numberInput" placeholder="Enter a number..." min="-999999" max="999999">
+        </div>
+        
+        <button onclick="addNumber()">➕ Add Number</button>
+        <button class="clear-btn" onclick="clearAll()">🗑️ Clear All</button>
+        
+        <div class="result" id="result" style="display: none;">
+            <div class="number-display" id="lastNumber">-</div>
+            <div>Numbers Added: <span id="count">0</span></div>
+            <div>Average: <span id="average">0</span></div>
+            <div id="statsContainer">
+                <div class="stats">
+                    <div class="stat">
+                        Min: <span id="min">-</span>
+                    </div>
+                    <div class="stat">
+                        Max: <span id="max">-</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let numbers = [];
+        let count = 0;
+
+        function addNumber() {
+            const input = document.getElementById('numberInput');
+            const value = parseFloat(input.value);
+            
+            if (isNaN(value)) {
+                alert('Please enter a valid number!');
+                input.focus();
+                return;
+            }
+            
+            numbers.push(value);
+            count++;
+            
+            input.value = '';
+            input.focus();
+            updateDisplay();
+        }
+
+        function updateDisplay() {
+            const result = document.getElementById('result');
+            const lastNumber = document.getElementById('lastNumber');
+            const countEl = document.getElementById('count');
+            const averageEl = document.getElementById('average');
+            const minEl = document.getElementById('min');
+            const maxEl = document.getElementById('max');
+            
+            result.style.display = 'block';
+            lastNumber.textContent = numbers[numbers.length - 1];
+            countEl.textContent = count;
+            
+            if (count > 0) {
+                const sum = numbers.reduce((a, b) => a + b, 0);
+                const average = sum / count;
+                const min = Math.min(...numbers);
+                const max = Math.max(...numbers);
+                
+                averageEl.textContent = average.toFixed(2);
+                minEl.textContent = min;
+                maxEl.textContent = max;
+            }
+        }
+
+        function clearAll() {
+            numbers = [];
+            count = 0;
+            document.getElementById('numberInput').value = '';
+            document.getElementById('result').style.display = 'none';
+        }
+
+        // Allow Enter key to add number
+        document.getElementById('numberInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                addNumber();
+            }
+        });
+
+        // Auto-focus input
+        document.getElementById('numberInput').focus();
+    </script>
+</body>
+</html>
