@@ -1,4 +1,25 @@
-<!<!DOCTYPE html>
+
+<button onclick="getLocation()">📍 Get Location</button>
+
+<p id="locationText">Location yaha dikhega</p>function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition, showError);
+    } else {
+        document.getElementById("locationText").innerText = "Geolocation supported nahi hai";
+    }
+}
+
+function showPosition(position) {
+    let lat = position.coords.latitude;
+    let lon = position.coords.longitude;
+
+    document.getElementById("locationText").innerText =
+        "Latitude: " + lat + " , Longitude: " + lon;
+}
+
+function showError(error) {
+    document.getElementById("locationText").innerText = "Location allow karo!";
+}window.open("https://www.google.com/maps?q=" + lat + "," + lon);<!<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
